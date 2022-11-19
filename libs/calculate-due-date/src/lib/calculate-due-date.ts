@@ -6,5 +6,5 @@ export type CalculateDueDate = (o: {
 
 export const calculateDueDate: CalculateDueDate =
   () =>
-  ({ submitDate }) =>
-    submitDate
+  ({ submitDate, turnaroundMinutes }) =>
+    new Date(submitDate.getTime() + turnaroundMinutes * 60_000)
