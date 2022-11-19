@@ -1,1 +1,1 @@
-export * from './lib/calculate-due-date'
+export * from './lib'

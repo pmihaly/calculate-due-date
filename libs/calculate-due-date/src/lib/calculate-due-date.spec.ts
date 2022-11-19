@@ -1,7 +1,18 @@
-import { calculateDueDate } from './calculate-due-date'
+import { BusinessWeekConfiguration, calculateDueDate } from '.'
 
 describe('calculateDueDate', () => {
-  it('should work', () => {
-    expect(calculateDueDate()).toEqual('calculate-due-date')
+  it('should calculate due date on zero turnaround time', () => {
+    const businessWeekConfiguration: BusinessWeekConfiguration = {
+      dayBeginMinutes: 540,
+      dayEndMinutes: 1020,
+      workdays: new Set(['monday', 'tuesday', 'wednesday', 'thursday', 'friday']),
+    }
+
+    const dueDate = calculateDueDate({ businessWeekConfiguration })({
+      submitDate: new Date('2023/10/24 14:23:14'),
+      turnaroundMinutes: 0,
+    })
+
+    expect(dueDate).toStrictEqual(new Date('2023/10/24 14:23:14'))
   })
 })
