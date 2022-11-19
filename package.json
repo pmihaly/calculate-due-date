@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {},
@@ -14,6 +15,10 @@
     "@nrwl/cli": "15.2.1",
     "@nrwl/workspace": "15.2.1",
     "typescript": "4.8.2",
-    "prettier": "2.6.2"
+    "prettier": "2.6.2",
+    "husky": "7.0.0"
+  },
+  "lint-staged": {
+    "**/src/**/*.{js,ts,jsx,tsx}": "eslint --cache --fix --max-warnings=0"
   }
 }
