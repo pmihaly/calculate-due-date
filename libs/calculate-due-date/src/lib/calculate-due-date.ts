@@ -1,4 +1,4 @@
-import { BusinessWeekConfiguration, Minutes } from '.'
+import { BusinessWeekConfiguration, daysInWeek, Minutes } from '.'
 
 export type CalculateDueDate = (o: {
   businessWeekConfiguration: BusinessWeekConfiguration
@@ -25,15 +25,21 @@ const calculateDueDateTail =
 
     return calculateDueDateTail(config)({
       turnaroundMinutesLeft: turnaroundMinutesLeft - minutesWorkedToday,
-      currentDueDate: getNextWorkdayStart(currentDueDate, config.dayBeginMinutes),
+      currentDueDate: getNextWorkdayStart(currentDueDate, config),
     })
   }
 
 const getEndOfWorkday = (date: Date, dayEndMinutes: Minutes): Date =>
   new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, dayEndMinutes, 0)
 
-const getNextWorkdayStart = (date: Date, dayBeginMinutes: Minutes): Date =>
-  new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, 0, dayBeginMinutes, 0)
+const getNextWorkdayStart = (date: Date, config: BusinessWeekConfiguration): Date => {
+  const tomorrow = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, 0, config.dayBeginMinutes, 0)
+
+  const isWorkday = config.workdays.has(daysInWeek[tomorrow.getDay()])
+  if (isWorkday) return tomorrow
+
+  return getNextWorkdayStart(tomorrow, config)
+}
 
 const addMinutesToDate = (date: Date, mins: Minutes): Date =>
   new Date(

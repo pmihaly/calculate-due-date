@@ -40,4 +40,17 @@ describe('calculateDueDate', () => {
 
     expect(dueDate).toStrictEqual(new Date('2023/10/26 15:00:00'))
   })
+
+  it('should calculate due date when turnaround overlaps weekends', () => {
+    const businessWeekConfiguration = createBusinessWeekConfiguration({})
+    const friday = new Date('2023/10/27 15:00:00')
+
+    const dueDate = calculateDueDate({ businessWeekConfiguration })({
+      submitDate: friday,
+      turnaroundMinutes: 960,
+    })
+
+    const tuesday = new Date('2023/10/31 15:00:00')
+    expect(dueDate).toStrictEqual(tuesday)
+  })
 })
